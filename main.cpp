@@ -2,6 +2,9 @@
 #include <vector>
 #include <map>
 #include <random>
+#include <map>
+#include <utility>
+
 
 #define PAIRS 3
 
@@ -14,12 +17,10 @@ char check_gen_dna(char base){
         case 'G' : return 'C';
         case 'C' : return 'G';
         default : return 'O';
-
-    }
-    
+ } 
 }
-
-char check_gen_rna(char base){
+ 
+char check_gen_rna(char base){   
     switch(base){
         case 'A' : return 'U';
         case 'U' : return 'A';
@@ -28,8 +29,8 @@ char check_gen_rna(char base){
         default : return 'O';
 
     }
-    
-}
+}    
+
 // ^^^^
 //---TRANSKRIPSI END---
 
@@ -39,6 +40,7 @@ int main(){
     std::vector<char> rna = {'G', 'U', 'U', 'C', 'G', 'A', 'U', 'C'};
        int count; 
        int ribs = dna.size();
+       std::map<char, char> codon;
 
 
     std::random_device rd;
@@ -54,7 +56,7 @@ int main(){
        char random_dna = dna[random_index];
 
         size_t random_index_rna = dis_rna(gen);
-       char random_rna = dna[random_index_rna];
+       char random_rna = rna[random_index_rna];
 
        for(int i = 0; i < ribs; i++){ 
            for(int j = 0 ; j < PAIRS; j++){
@@ -62,10 +64,16 @@ int main(){
                std::cout<<"this is dna: " <<check_gen_dna(random_dna)<<" ";
             std::cout <<random_rna<<" ";
                std::cout<<"this is rna: " <<check_gen_rna(random_rna)<<" ";
+           codon[random_rna] = random_dna;
         }
-            std::cout<<"\n";
-       }
-
+        std::cout<<"\n";
+    }
+    char check = check_gen_rna(random_rna);
+    for(int i = 0; i < PAIRS; i++){
+        std::tuple<char, char, char> sample = {check, i.first, i.second };
+       std::cout<<sample[i];
+       
+    }
 
     return 0;
 }
